@@ -6,7 +6,7 @@ import { Context } from '../../contenxt/Context';
 const Sidebar = () => {
     const [extended, setExtended] = useState(false);
 
-    const {onSent,previousPrompt, setRecentPrompt} =  useContext(Context);
+    const {onSent,previousPrompt, setRecentPrompt,newChat} =  useContext(Context);
     const loadPrompt = async (prompt) =>{
          setRecentPrompt(prompt)
         await onSent(prompt);
@@ -15,7 +15,7 @@ const Sidebar = () => {
         <div className='sidebar'>
             <div className="top">
                 <img onClick={()=>setExtended(prev=>!prev)} className='menu' src={assets.menu_icon} alt="" />
-                <div className="new-chat">
+                <div onClick={()=>newChat()} className="new-chat">
                     <img src={assets.plus_icon} alt="" />
                     {extended ? <p>New Cat</p> : null}
                 </div>
