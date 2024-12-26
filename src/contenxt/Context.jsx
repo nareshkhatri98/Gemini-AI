@@ -6,7 +6,7 @@ export const Context = createContext()
 const ContextProvider = (props) =>{
     const [input, setInput] = useState("");
     const [recentPrompt, setRecentPrompt] = useState("");
-    const [previousPrompt, setPreviousPrompt] = useState("");
+    const [previousPrompt, setPreviousPrompt] = useState([]);
     const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("")
@@ -23,9 +23,20 @@ const ContextProvider = (props) =>{
         setResultData("");
         setLoading(true);
         setShowResult(true);
-        setRecentPrompt(input);
-        const response = await run(input)
-        let responseArray = response.split("**");
+        let Response;
+        if(prompt!== undefined){
+            Response = await run(input)
+            setRecentPrompt(prompt)
+
+        }else{
+
+            setPreviousPrompt(prev=>[...prev,input])
+            setRecentPrompt(input); 
+            Response = await run(input)
+        }
+        
+      
+        let responseArray = Response.split("**");
         let newResponse = "";
         for(let i = 0; i < responseArray.length; i++){
             if( i===0 || i%2 !==1){
